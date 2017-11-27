@@ -54,9 +54,8 @@ import org.slf4j.LoggerFactory;
  */
 public class LogviewerServer implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(LogviewerServer.class);
-    private static final Meter meterShutdownCalls = StormMetricsRegistry.registerMeter("logviewer:num-shutdown-calls");
-    private static final String stormHome = System.getProperty("storm.home");
-    public static final String STATIC_RESOURCE_DIRECTORY_PATH = stormHome + "/public";
+    private static final Meter meterShutdownCalls = StormMetricsRegistry.registerMeter("drpc:num-shutdown-calls");
+    public static final String STATIC_RESOURCE_DIRECTORY_PATH = "./public";
 
     private static Server mkHttpServer(Map<String, Object> conf) {
         Integer logviewerHttpPort = (Integer) conf.get(DaemonConfig.LOGVIEWER_PORT);
@@ -94,7 +93,6 @@ public class LogviewerServer implements AutoCloseable {
                 throw new RuntimeException("Can't locate static resource directory " + STATIC_RESOURCE_DIRECTORY_PATH);
             }
 
-            context.setWelcomeFiles(new String[]{"logviewer.html"});
             context.setContextPath("/");
             ret.setHandler(context);
 
